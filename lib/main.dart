@@ -1,4 +1,3 @@
-import 'dart:async';
 
 import 'package:crypto_test/screens/game_screen/game_model.dart';
 import 'package:crypto_test/screens/game_screen/game_view.dart';
@@ -98,16 +97,6 @@ class _CryptoTestState extends State<CryptoTest> {
               },
               routes: [
                 GoRoute(
-                  path: 'game_screen',
-                  pageBuilder: (context, state) {
-                    return buildPageWithDefaultTransition(
-                      context: context,
-                      state: state,
-                      child: GameScreen(),
-                    );
-                  },
-                ),
-                GoRoute(
                   path: 'store_screen',
                   pageBuilder: (context, state) {
                     return buildPageWithDefaultTransition(
@@ -140,6 +129,16 @@ class _CryptoTestState extends State<CryptoTest> {
               },
             ),
           ],
+        ),
+        GoRoute(
+          path: '/game_screen',
+          pageBuilder: (context, state) {
+            return buildPageWithDefaultTransition(
+              context: context,
+              state: state,
+              child: GameScreen(),
+            );
+          },
         ),
         GoRoute(
           path: '/result_screen',
