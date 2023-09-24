@@ -79,9 +79,8 @@ class GameModel extends ChangeNotifier {
     });
   }
 
-  void openQuiz(int id, BuildContext context) {
+  void openQuiz(int id) {
     resetValues();
-    _context = context;
     _level = levels[id];
     _quiz = _level.quizzes[_questionOrder];
     _duration = _level.duration;
@@ -140,7 +139,8 @@ class GameModel extends ChangeNotifier {
     _isTrueHintAvailable = true;
   }
 
-  Color getColor(int index) {
+  Color getColor(int index, BuildContext context) {
+    _context = context;
     for (final item in _closeWrongAnswers) {
       if (item == index) {
         return AppTheme.skyBlue2.withOpacity(0.6);
@@ -241,6 +241,7 @@ class GameModel extends ChangeNotifier {
       _preferenceService.setOpenedLevel(_openedLevels);
     }
     stopTimer();
+
     _context.go('/result_screen');
   }
 

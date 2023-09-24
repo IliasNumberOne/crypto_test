@@ -133,7 +133,7 @@ class GameScreen extends StatelessWidget {
                               width: double.infinity,
                               padding: EdgeInsets.symmetric(vertical: 20.h),
                               decoration: BoxDecoration(
-                                color: gameModel.getColor(index),
+                                color: gameModel.getColor(index, context),
                                 borderRadius: BorderRadius.circular(10),
                               ),
                               child: AutoSizeText(
