@@ -1,4 +1,4 @@
-import 'package:crypto_test/models/quiz_item_model.dart';
+import 'package:blurrycontainer/blurrycontainer.dart';
 import 'package:crypto_test/screens/game_screen/game_model.dart';
 import 'package:crypto_test/screens/quiz_screen/quiz_model.dart';
 import 'package:crypto_test/screens/store_screen/store_model.dart';
@@ -157,14 +157,13 @@ class LevelsItem extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
+    return BlurryContainer(
+      blur: 5,
       width: double.infinity,
       height: 75.h,
       padding: EdgeInsets.symmetric(horizontal: 24.w),
-      decoration: BoxDecoration(
-        borderRadius: BorderRadius.circular(10),
-        color: const Color(0x1A1EA1FF).withOpacity(0.25),
-      ),
+      borderRadius: BorderRadius.circular(10),
+      color: const Color(0x1A1EA1FF).withOpacity(0.25),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [

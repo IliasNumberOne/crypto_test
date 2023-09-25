@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'dart:ui';
 
 import 'package:crypto_test/models/quiz_item_model.dart';
 import 'package:crypto_test/screens/store_screen/store_model.dart';
@@ -293,6 +294,7 @@ class GameModel extends ChangeNotifier {
   void exitGame() {
     showCupertinoModalPopup(
       context: _context,
+      filter: ImageFilter.blur(sigmaY: 10, sigmaX: 10),
       builder: (BuildContext context) => CupertinoAlertDialog(
         title: const Text("Leave the game?"),
         content: const Text(
