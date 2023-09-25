@@ -9,7 +9,6 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/foundation.dart';
 import 'package:go_router/go_router.dart';
 
-
 class GameModel extends ChangeNotifier {
   final PreferenceService _preferenceService;
   final StoreModel _storeModel;
@@ -17,9 +16,8 @@ class GameModel extends ChangeNotifier {
   GameModel({
     required PreferenceService preferenceService,
     required StoreModel storeModel,
-  }) : _preferenceService = preferenceService,
-      _storeModel = storeModel;
-
+  })  : _preferenceService = preferenceService,
+        _storeModel = storeModel;
 
   late Level _level;
   late Quiz _quiz;
@@ -46,24 +44,43 @@ class GameModel extends ChangeNotifier {
   late BuildContext _context;
 
   Level get level => _level;
+
   Quiz get quiz => _quiz;
+
   int get duration => _duration;
+
   int get questionOrder => _questionOrder;
+
   bool get isAnswerPressed => _isAnswerPressed;
+
   List<bool> get answersResult => _answersResult;
+
   int get rightAnswers => _rightAnswers;
+
   int get openedLevels => _openedLevels;
+
   int get passingScore => _passingScore;
+
   bool get isThreeToOneAvailable => _isThreeToOneAvailable;
+
   bool get isFiftyFiftyAvailable => _isFiftyFiftyAvailable;
+
   bool get isTrueHintAvailable => _isTrueHintAvailable;
+
   int get threeToOneAmount => _threeToOneAmount;
+
   int get fiftyFiftyAmount => _fiftyFiftyAmount;
+
   int get trueHintAmount => _trueHintAmount;
+
   bool get isCheckingAnswer => _isCheckingAnswer;
+
   List<String> get quizTimes => _quizTimes;
+
   List<String> get quizTrueAnswers => _quizTrueAnswers;
+
   List<int> get closeWrongAnswers => _closeWrongAnswers;
+
   int get dailyAttempts => _dailyAttempts;
 
   void resumeApp() {
@@ -72,7 +89,7 @@ class GameModel extends ChangeNotifier {
     _quizTimes = _preferenceService.getQuizTimes();
     _quizTrueAnswers = _preferenceService.getQuizTrueAnswers();
 
-    Timer.periodic(const Duration(hours: 24), (timer){
+    Timer.periodic(const Duration(hours: 24), (timer) {
       _dailyAttempts = 5;
       _preferenceService.setDailyAttempts(_dailyAttempts);
       notifyListeners();
@@ -91,16 +108,16 @@ class GameModel extends ChangeNotifier {
     startTimer();
   }
 
-
   void startTimer() {
     _countDownTimer = Timer.periodic(Duration(seconds: 1), (timer) {
       _duration--;
-      if(_duration == 0) {
+      if (_duration == 0) {
         endQuiz();
       }
       notifyListeners();
     });
   }
+
   void stopTimer() {
     _countDownTimer.cancel();
   }
@@ -164,7 +181,9 @@ class GameModel extends ChangeNotifier {
   }
 
   void hints(int index) {
-    if (_isFiftyFiftyAvailable && _isThreeToOneAvailable && _isTrueHintAvailable) {
+    if (_isFiftyFiftyAvailable &&
+        _isThreeToOneAvailable &&
+        _isTrueHintAvailable) {
       for (var i = 0; i < _quiz.answers.length; i++) {
         if (!_quiz.answers[i].isCorrect) {
           _closeWrongAnswers.add(i);
@@ -172,7 +191,7 @@ class GameModel extends ChangeNotifier {
       }
       _closeWrongAnswers.shuffle();
 
-      if (index == 0 && _isThreeToOneAvailable ) {
+      if (index == 0 && _isThreeToOneAvailable) {
         for (int i = 0; i <= 1; i++) {
           _closeWrongAnswers.removeAt(0);
         }
@@ -194,7 +213,10 @@ class GameModel extends ChangeNotifier {
   }
 
   void trueHint(BuildContext context) {
-    if (_isTrueHintAvailable && _isThreeToOneAvailable && _isFiftyFiftyAvailable && _trueHintAmount > 0) {
+    if (_isTrueHintAvailable &&
+        _isThreeToOneAvailable &&
+        _isFiftyFiftyAvailable &&
+        _trueHintAmount > 0) {
       for (int i = 0; i < _quiz.answers.length; i++) {
         if (_quiz.answers[i].isCorrect) {
           checkAnswer(_quiz.answers[i].isCorrect, i, context);
@@ -213,9 +235,10 @@ class GameModel extends ChangeNotifier {
     _quizTimes[_level.id] = quizTimesAmount.toString();
     _preferenceService.setQuizTimes(_quizTimes);
   }
+
   void plusQuizTrueAnswers(int rightAnswers) {
     int quizTrueAnswersAmount = int.parse(_quizTrueAnswers[_level.id]);
-    if(rightAnswers > quizTrueAnswersAmount){
+    if (rightAnswers > quizTrueAnswersAmount) {
       quizTrueAnswersAmount = rightAnswers;
       _quizTrueAnswers[_level.id] = quizTrueAnswersAmount.toString();
       _preferenceService.setQuizTrueAnswers(_quizTrueAnswers);
@@ -249,21 +272,50 @@ class GameModel extends ChangeNotifier {
     _isAnswerPressed = true;
     _pressedAnswerInd = index;
     _answersResult.add(isCorrect);
-    if(!isCorrect) {
+    if (!isCorrect) {
       _duration = _duration - 10;
     }
-    Future.delayed(const Duration(milliseconds: 800), () {
-      if (questionOrder + 1 == _level.gain) {
-        endQuiz();
-      } else {
-        _questionOrder++;
-        nextQuestion();
-        notifyListeners();
-      }
-    },
+    Future.delayed(
+      const Duration(milliseconds: 800),
+      () {
+        if (questionOrder + 1 == _level.gain) {
+          endQuiz();
+        } else {
+          _questionOrder++;
+          nextQuestion();
+          notifyListeners();
+        }
+      },
     );
     notifyListeners();
   }
 
+  void exitGame() {
+    showCupertinoModalPopup(
+      context: _context,
+      builder: (BuildContext context) => CupertinoAlertDialog(
+        title: const Text("Leave the game?"),
+        content: const Text(
+            'If you exit the game, you will lose everything you earned'),
+        actions: <CupertinoDialogAction>[
+          CupertinoDialogAction(
+            isDefaultAction: true,
+            onPressed: () {
+              Navigator.pop(_context);
+              startTimer();
+            },
+            child: const Text('Cancel'),
+          ),
+          CupertinoDialogAction(
+            isDestructiveAction: true,
+            onPressed: () => {
+              _storeModel.resumeApp(),
+              _context.go('/'),
+            },
+            child: const Text('Leave'),
+          )
+        ],
+      ),
+    );
+  }
 }
-

@@ -6,7 +6,6 @@ import 'package:crypto_test/utils/app_style.dart';
 import 'package:crypto_test/utils/app_theme.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
 
 class GameScreen extends StatelessWidget {
@@ -43,7 +42,7 @@ class GameScreen extends StatelessWidget {
                       crossAxisAlignment: CrossAxisAlignment.center,
                       children: [
                         GestureDetector(
-                          onTap: () => {context.go('/'), storeModel.resumeApp(), gameModel.stopTimer()},
+                          onTap: () => {gameModel.stopTimer(), gameModel.exitGame()},
                           child: Container(
                             width: 40.w,
                             height: 40.w,
