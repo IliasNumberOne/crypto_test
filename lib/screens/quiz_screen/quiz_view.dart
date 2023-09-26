@@ -69,10 +69,12 @@ class QuizScreen extends StatelessWidget {
                     levels.length,
                     (index) {
                       return GestureDetector(
-                        onTap: () => gameModel.dailyAttempts > 0 ? {
-                          context.go('/game_screen'),
-                          gameModel.openQuiz(levels[index].id),
-                        } : {},
+                        onTap: () => gameModel.dailyAttempts > 0
+                            ? {
+                                context.go('/game_screen'),
+                                gameModel.openQuiz(levels[index].id),
+                              }
+                            : {},
                         child: LevelsItem(
                           levelName: levels[index].name,
                           questionsAmount: levels[index].gain,
@@ -110,11 +112,11 @@ class QuizScreen extends StatelessWidget {
               Padding(
                 padding: EdgeInsets.only(left: 24.w, right: 24.w, bottom: 24.w),
                 child: GestureDetector(
-                  onTap: () => gameModel.dailyAttempts > 0 ? {
-                    context.go('/game_screen'),
-                    gameModel.openQuiz(
-                        levels[gameModel.openedLevels - 1].id),
-                  } : {},
+                  onTap: () {
+                    if (gameModel.dailyAttempts <= 0) return;
+                    context.go('/game_screen');
+                    gameModel.openQuiz(levels[gameModel.openedLevels - 1].id);
+                  },
                   child: Container(
                     width: double.infinity,
                     height: 64.h,
