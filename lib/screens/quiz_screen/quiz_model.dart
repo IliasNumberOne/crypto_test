@@ -4,9 +4,7 @@ import 'package:flutter/widgets.dart';
 class QuizModel extends ChangeNotifier {
   final PreferenceService _preferenceService;
 
-  QuizModel(
-      {required PreferenceService preferenceService,})
-      : _preferenceService = preferenceService;
-
-
+  QuizModel({
+    required PreferenceService preferenceService,
+  }) : _preferenceService = preferenceService;
 }

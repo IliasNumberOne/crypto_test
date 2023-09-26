@@ -1,4 +1,3 @@
-
 import 'package:crypto_test/screens/game_screen/game_model.dart';
 import 'package:crypto_test/screens/game_screen/game_view.dart';
 import 'package:crypto_test/screens/profile_screen/profile_model.dart';
@@ -73,9 +72,7 @@ class _CryptoTestState extends State<CryptoTest> {
       routes: [
         ShellRoute(
           pageBuilder: (context, state, child) {
-            final hasBottomBar =
-                (_router.routerDelegate.currentConfiguration.uri.toString() !=
-                    '/game_screen');
+            final hasBottomBar = (state.fullPath != '/game_screen');
             return buildPageWithDefaultTransition(
               context: context,
               state: state,
